@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cricket Scoreboard</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+    body {
+        margin-top: 150px;
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  text-align: center;
+  background-color: blueviolet;
+}
+
+.scoreboard {
+  max-width: 800px;
+  margin: 30px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.team {
+  display: inline-block;
+  text-align: left;
+  width: 150px;
+  padding: 10px;
+}
+
+.team h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+}
+
+.team .score {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.info {
+  margin-top: 20px;
+}
+
+.info p {
+  margin: 5px 0;
+}
+
+.info span {
+  font-weight: bold;
+}
+
+.buttons {
+  margin-top: 20px;
+}
+
+.buttons button {
+  margin: 5px;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+</style>
+
+<script>// Initialize scoreboard variables
+    let overs = 0;
+    let balls = 0;
+    let teamAScore = { runs: 0, wickets: 0 };
+    let teamBScore = { runs: 0, wickets: 0 };
+    let target = "-";
+    
+    // Function to update scoreboard
+    function updateScoreboard() {
+      document.querySelector('.team:nth-of-type(1) .score').textContent = `${teamAScore.runs}/${teamAScore.wickets}`;
+      document.querySelector('.team:nth-of-type(2) .score').textContent = `${teamBScore.runs}/${teamBScore.wickets}`;
+      document.getElementById('overs').textContent = `${overs}.${balls}`;
+      document.getElementById('target').textContent = target !== "-" ? target : "-";
+      document.getElementById('run-rate').textContent = calculateRunRate().toFixed(2);
+    }
+    
+    // Function to record runs or wickets
+    function recordRun(team, runs) {
+      if (team === 'A') {
+        if (runs === 0) {
+          teamAScore.wickets++;
+        } else {
+          teamAScore.runs += runs;
+        }
+      } else if (team === 'B') {
+        if (runs === 0) {
+          teamBScore.wickets++;
+        } else {
+          teamBScore.runs += runs;
+        }
+      }
+    
+      balls++;
+      if (balls === 6) {
+        balls = 0;
+        overs++;
+      }
+    
+      updateScoreboard();
+    }
+    
+    // Function to calculate run rate for Team  Pakistan
+    function calculateRunRate() {
+      if (overs === 0 && balls === 0) {
+        return 0.00;
+      } else {
+        const totalBalls = overs * 6 + balls;
+        return (teamBScore.runs / totalBalls) * 6;
+      }
+    }
+    
+   
+    updateScoreboard();
+    </script>
+</head>
+<body>
+  <div class="scoreboard">
+    <div class="team">
+      <h2> INDIA</h2>
+      <div class="score">0/0</div>
+    </div>
+    <div class="team">
+      <h2> PAKISTAN</h2>
+      <div class="score">0/0</div>
+    </div>
+    <div class="info">
+      <p>Overs: <span id="overs">0.0</span></p>
+      <p>Target: <span id="target">-</span></p>
+      <p>Run Rate: <span id="run-rate">0.00</span></p>
+    </div>
+    <div class="buttons">
+        <h1>Runs for team  India</h1>
+      <button onclick="recordRun('A', 1)">1</button>
+      <button onclick="recordRun('A', 4)">4   </button>
+      <button onclick="recordRun('A', 6)">6   </button>
+      <button onclick="recordRun('A', 0)">Out </button>
+      <h1>Runs for team Pakistan</h1>
+      <button onclick="recordRun('B', 1)">1</button>
+      <button onclick="recordRun('B', 4)">4</button>
+      <button onclick="recordRun('B', 6)">6 </button>
+      <button onclick="recordRun('B', 0)">Out </button>
+    </div>
+  </div>
+
+  
+</body>
+</html>
